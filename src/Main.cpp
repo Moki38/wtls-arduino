@@ -94,10 +94,16 @@ void loop() {
     display.setCursor(0,8);
 
     if(vs_full>v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v ) {
+        display.println(char(0xD2));
+        display.println(char(0xD2));
+        display.println(char(0xD2));
         display.println("FULL");
     } else if(vs_full<v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v) {
+        display.println(char(0xD2));
+        display.println(char(0xD2));
         display.println("75%");
     } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter>v && vs_1_quarter>v) {
+        display.println(char(0xD2));
         display.println("50%");
     } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter<v && vs_1_quarter>v) {
         display.println("25%");
