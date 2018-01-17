@@ -28,6 +28,12 @@
 //#define DEBUG 1
 
 //
+// Display
+//     1: OLED Yelllow/Blue 128x64 (i2c 0x3c)
+//
+#define DISPLAY_TYPE 1
+
+//
 // Define Tanks used
 //
 #define VS_TANK

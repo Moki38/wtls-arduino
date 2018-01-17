@@ -20,6 +20,18 @@
 #include "Main.h"
 #include "Config.h"
 
+#if DISPLAY_TYPE == 1
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#endif
+
+#if DISPLAY_TYPE == 1
+#define OLED_RESET 4
+Adafruit_SSD1306 display(OLED_RESET);
+#endif
+
 int v=100;          //  comparison variable (may need some adjustment)
 
 #ifdef VS_TANK
@@ -57,6 +69,11 @@ int ws_full_pin = A9;
 void setup() {
     // Open serial communications
     Serial.begin(115200);
+
+#if DISPLAY_TYPE == 1
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
+    display.clearDisplay();
+#endif
 
 #ifdef VS_TANK
     pinMode(vs_1_pin,INPUT);
@@ -114,39 +131,118 @@ void loop() {
     ws_full = analogRead(ws_full_pin);
 #endif
 
+#if DISPLAY_TYPE == 1
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+
+    display.setCursor(0,0);
+    display.println("Water Tank Levels");
+#endif
+
 #ifdef VS_TANK
     Serial.print("VS:");
+#if DISPLAY_TYPE == 1
+    display.print("VS: ");
+    display.drawRect(25, 8, 50, 7, WHITE);
+#endif
     if(vs_full>v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v ) {
         Serial.println("100");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 8, 50, 7, 1);
+        display.setCursor(80,8);
+        display.println("(100%)");
+#endif
     } else if(vs_full<v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v) {
         Serial.println("75");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 8, 38, 7, 1);
+        display.setCursor(80,8);
+        display.println("(75%)");
+#endif
     } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter>v && vs_1_quarter>v) {
         Serial.println("50");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 8, 25, 7, 1);
+        display.setCursor(80,8);
+        display.println("(50%)");
+#endif
     } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter<v && vs_1_quarter>v) {
         Serial.println("25");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 8, 13, 7, 1);
+        display.setCursor(80,8);
+        display.println("(25%)");
+#endif
     }
 #endif
  
 #ifdef AS_TANK
     Serial.print("AS:");
+
+#if DISPLAY_TYPE == 1
+    display.print("AS: ");
+    display.drawRect(25, 16, 50, 7, WHITE);
+#endif
+
     if(as_full>v && as_3_quarter>v && as_2_quarter>v && as_1_quarter>v ) {
         Serial.println("100");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 16, 50, 7, 1);
+        display.setCursor(80,16);
+        display.println("(100%)");
+#endif
     } else if(as_full<v && as_3_quarter>v && as_2_quarter>v && as_1_quarter>v) {
         Serial.println("75");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 16, 38, 7, 1);
+        display.setCursor(80,16);
+        display.println("(75%)");
+#endif
     } else if(as_full<v && as_3_quarter<v && as_2_quarter>v && as_1_quarter>v) {
         Serial.println("50");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 16, 25, 7, 1);
+        display.setCursor(80,16);
+        display.println("(50%)");
+#endif
     } else if(as_full<v && as_3_quarter<v && as_2_quarter<v && as_1_quarter>v) {
         Serial.println("25");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 16, 13, 7, 1);
+        display.setCursor(80,16);
+        display.println("(25%)");
+#endif
     }
 #endif
 
 #ifdef WS_TANK
     Serial.print("WS:");
+
+#if DISPLAY_TYPE == 1
+    display.print("WS: ");
+    display.drawRect(25, 24, 50, 7, WHITE);
+#endif
+
     if(ws_full>v && ws_3_quarter>v ) {
         Serial.println("100");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 24, 50, 7, 1);
+        display.setCursor(80,24);
+        display.println("(100%)");
+#endif
     } else if(ws_full<v && ws_3_quarter>v ) {
         Serial.println("75");
+#if DISPLAY_TYPE == 1
+        display.fillRect(25, 24, 38, 7, 1);
+        display.setCursor(80,24);
+        display.println("(75%)");
+#endif
     }
+#endif
+
+#if DISPLAY_TYPE == 1
+    display.display();
 #endif
  
     delay(2000);
