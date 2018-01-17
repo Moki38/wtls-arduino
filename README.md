@@ -1,6 +1,6 @@
 # wtls-arduino
 
-![Screenshot 1](http://wiki.team-moki.nl/download/attachments/16547884/IMG_0624.jpg?version=1&modificationDate=1514731941631&api=v2)
+![Screenshot 1](http://wiki.team-moki.nl/pages/viewpage.action?pageId=16547956&preview=/16547956/16547971/5a4aec87-dc41-438b-8f20-5a96763cd1ed.jpg)
 
 ## Description
 
