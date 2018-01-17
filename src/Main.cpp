@@ -18,12 +18,11 @@
 */
 
 #include "Main.h"
+#include "Config.h"
 
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
+int v=100;          //  comparison variable (may need some adjustment)
 
-int v=100; //comparison variable(needs some adjustment)
-
+#ifdef VS_TANK
 int vs_1_quarter;
 int vs_2_quarter;
 int vs_3_quarter;
@@ -32,7 +31,9 @@ int vs_1_pin = A0;
 int vs_2_pin = A1;
 int vs_3_pin = A2;
 int vs_full_pin = A3;
+#endif
 
+#ifdef AS_TANK
 int as_1_quarter;
 int as_2_quarter;
 int as_3_quarter;
@@ -41,73 +42,112 @@ int as_1_pin = A4;
 int as_2_pin = A5;
 int as_3_pin = A6;
 int as_full_pin = A7;
+#endif
 
+#ifdef WS_TANK
 int ws_3_quarter;
 int ws_full;
 int ws_3_pin = A8;
 int ws_full_pin = A9;
+#endif
 
+//
+// Setup
+//
 void setup() {
     // Open serial communications
     Serial.begin(115200);
 
-    // initialize with the I2C addr 0x3D (for the 128x64)
-    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-    display.clearDisplay();
-
+#ifdef VS_TANK
     pinMode(vs_1_pin,INPUT);
     pinMode(vs_2_pin,INPUT);
     pinMode(vs_3_pin,INPUT);
     pinMode(vs_full_pin,INPUT);
+#endif
 
+#ifdef AS_TANK
     pinMode(as_1_pin,INPUT);
     pinMode(as_2_pin,INPUT);
     pinMode(as_3_pin,INPUT);
     pinMode(as_full_pin,INPUT);
+#endif
 
+#ifdef WS_TANK
     pinMode(ws_3_pin,INPUT);
     pinMode(ws_full_pin,INPUT);
+#endif
+
 }
 
+//
+// Main loop
+//
 void loop() {
+
+#ifdef DEBUG
+    Serial.print("Debug: ");
+    Serial.print(vs_1_quarter);
+    Serial.print(", ");
+    Serial.print(vs_2_quarter);
+    Serial.print(", ");
+    Serial.print(vs_3_quarter);
+    Serial.print(", ");
+    Serial.println(vs_full);
+#endif
+
+#ifdef VS_TANK
     vs_1_quarter = analogRead(vs_1_pin);
     vs_2_quarter = analogRead(vs_2_pin);
     vs_3_quarter = analogRead(vs_3_pin);
     vs_full = analogRead(vs_full_pin);
+#endif
 
+#ifdef AS_TANK
     as_1_quarter = analogRead(as_1_pin);
     as_2_quarter = analogRead(as_2_pin);
     as_3_quarter = analogRead(as_3_pin);
     as_full = analogRead(as_full_pin);
+#endif
 
+#ifdef WS_TANK
     ws_3_quarter = analogRead(ws_3_pin);
     ws_full = analogRead(ws_full_pin);
+#endif
 
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setTextColor(WHITE);
-
-    display.setCursor(0,0);
-    display.print("Water Tank Levels: ");
-
-    display.setTextSize(2);
-    display.setCursor(0,8);
-
+#ifdef VS_TANK
+    Serial.print("VS:");
     if(vs_full>v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v ) {
-        display.println(char(0xD2));
-        display.println(char(0xD2));
-        display.println(char(0xD2));
-        display.println("FULL");
+        Serial.println("100");
     } else if(vs_full<v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v) {
-        display.println(char(0xD2));
-        display.println(char(0xD2));
-        display.println("75%");
+        Serial.println("75");
     } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter>v && vs_1_quarter>v) {
-        display.println(char(0xD2));
-        display.println("50%");
+        Serial.println("50");
     } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter<v && vs_1_quarter>v) {
-        display.println("25%");
+        Serial.println("25");
     }
+#endif
+ 
+#ifdef AS_TANK
+    Serial.print("AS:");
+    if(as_full>v && as_3_quarter>v && as_2_quarter>v && as_1_quarter>v ) {
+        Serial.println("100");
+    } else if(as_full<v && as_3_quarter>v && as_2_quarter>v && as_1_quarter>v) {
+        Serial.println("75");
+    } else if(as_full<v && as_3_quarter<v && as_2_quarter>v && as_1_quarter>v) {
+        Serial.println("50");
+    } else if(as_full<v && as_3_quarter<v && as_2_quarter<v && as_1_quarter>v) {
+        Serial.println("25");
+    }
+#endif
+
+#ifdef WS_TANK
+    Serial.print("WS:");
+    if(ws_full>v && ws_3_quarter>v ) {
+        Serial.println("100");
+    } else if(ws_full<v && ws_3_quarter>v ) {
+        Serial.println("75");
+    }
+#endif
  
     delay(2000);
 }
