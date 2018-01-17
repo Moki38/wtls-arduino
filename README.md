@@ -32,7 +32,7 @@ wget https://raw.githubusercontent.com/platformio/platformio/develop/scripts/get
 python get-platformio.py
 pip install -U platformio 
 
-git clone https://github.com/Moki38/wbus-arduino.git
+git clone https://github.com/Moki38/wtls-arduino.git
 cd wtls-arduino
 ```
 
