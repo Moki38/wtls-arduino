@@ -20,7 +20,7 @@
 //
 // Version
 //
-#define VERSION 0.0.1
+#define VERSION 0.0.2
 
 //
 // Debug
@@ -29,7 +29,9 @@
 
 //
 // Display
+//     0: Serial Only
 //     1: OLED Yelllow/Blue 128x64 (i2c 0x3c)
+//     2: 1602 LCD Board Keypad Shield (Sainsmart)
 //
 #define DISPLAY_TYPE 1
 
