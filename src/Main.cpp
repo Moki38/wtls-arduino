@@ -141,6 +141,7 @@ void loop() {
     display.clearDisplay();
     display.setTextSize(1);
     display.setTextColor(WHITE);
+//    display.setTextColor(BLACK, WHITE);
 
     display.setCursor(0,0);
     display.println("Water Tank Levels");
@@ -222,7 +223,7 @@ void loop() {
 
         if (vs_alarm) {
             if (vs_blink) {
-                display.setTextColor(BLACK);
+                display.setTextColor(BLACK, WHITE);
                 vs_blink = false;
             } else {
                 display.setTextColor(WHITE);
@@ -289,7 +290,7 @@ void loop() {
 
         if (as_alarm) {
             if (as_blink) {
-                display.setTextColor(BLACK);
+                display.setTextColor(BLACK, WHITE);
                 as_blink = false;
             } else {
                 display.setTextColor(WHITE);
@@ -322,7 +323,7 @@ void loop() {
 
         if (ws_alarm) {
             if (ws_blink) {
-                display.setTextColor(BLACK);
+                display.setTextColor(BLACK, WHITE);
                 ws_blink = false;
             } else {
                 display.setTextColor(WHITE);
@@ -343,7 +344,7 @@ void loop() {
 
         if (ws_alarm) {
             if (ws_blink) {
-                display.setTextColor(BLACK);
+                display.setTextColor(BLACK, WHITE);
                 ws_blink = false;
             } else {
                 display.setTextColor(WHITE);
