@@ -39,5 +39,22 @@
 // Define Tanks used
 //
 #define VS_TANK
-//#define AS_TANK
-//#define WS_TANK
+#define AS_TANK
+#define WS_TANK
+
+//
+// Defne Tank analog pins
+//
+#define VS_1Q_PIN A0
+#define VS_2Q_PIN A1
+#define VS_3Q_PIN A2
+#define VS_4Q_PIN A3
+
+#define AS_1Q_PIN A6
+#define AS_2Q_PIN A7
+#define AS_3Q_PIN A8
+#define AS_4Q_PIN A9
+
+#define WS_3Q_PIN A14
+#define WS_4Q_PIN A14
+

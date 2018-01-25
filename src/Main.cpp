@@ -40,36 +40,26 @@ LiquidCrystal lcd( 8, 9, 4, 5, 6, 7 );
 int v=100;          //  comparison variable (may need some adjustment)
 
 #ifdef VS_TANK
-int vs_1_quarter;
-int vs_2_quarter;
-int vs_3_quarter;
-int vs_full;
-int vs_1_pin = A0;
-int vs_2_pin = A1;
-int vs_3_pin = A2;
-int vs_full_pin = A3;
+int vs_1q_value;
+int vs_2q_value;
+int vs_3q_value;
+int vs_4q_value;
 bool vs_alarm;
 bool vs_blink;
 #endif
 
 #ifdef AS_TANK
-int as_1_quarter;
-int as_2_quarter;
-int as_3_quarter;
-int as_full;
-int as_1_pin = A4;
-int as_2_pin = A5;
-int as_3_pin = A6;
-int as_full_pin = A7;
+int as_1q_value;
+int as_2q_value;
+int as_3q_value;
+int as_4q_value;
 bool as_alarm;
 bool as_blink;
 #endif
 
 #ifdef WS_TANK
-int ws_3_quarter;
-int ws_full;
-int ws_3_pin = A8;
-int ws_full_pin = A9;
+int ws_3q_value;
+int ws_4q_value;
 bool ws_alarm;
 bool ws_blink;
 #endif
@@ -85,30 +75,31 @@ void setup() {
     display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
     display.clearDisplay();
 #endif
+
 #if DISPLAY_TYPE == 2
     lcd.begin(16, 2);
 #endif
 
 #ifdef VS_TANK
-    pinMode(vs_1_pin,INPUT);
-    pinMode(vs_2_pin,INPUT);
-    pinMode(vs_3_pin,INPUT);
-    pinMode(vs_full_pin,INPUT);
+    pinMode(VS_1Q_PIN,INPUT);
+    pinMode(VS_2Q_PIN,INPUT);
+    pinMode(VS_3Q_PIN,INPUT);
+    pinMode(VS_4Q_PIN,INPUT);
 #endif
 
 #ifdef AS_TANK
-    pinMode(as_1_pin,INPUT);
-    pinMode(as_2_pin,INPUT);
-    pinMode(as_3_pin,INPUT);
-    pinMode(as_full_pin,INPUT);
+    pinMode(AS_1Q_PIN,INPUT);
+    pinMode(AS_2Q_PIN,INPUT);
+    pinMode(AS_3Q_PIN,INPUT);
+    pinMode(AS_4Q_PIN,INPUT);
 #endif
 
 #ifdef WS_TANK
-    pinMode(ws_3_pin,INPUT);
-    pinMode(ws_full_pin,INPUT);
+    pinMode(WS_3Q_PIN,INPUT);
+    pinMode(WS_4Q_PIN,INPUT);
 #endif
 
-}
+} // Setup
 
 //
 // Main loop
@@ -117,32 +108,33 @@ void loop() {
 
 #ifdef DEBUG
     Serial.print("Debug: ");
-    Serial.print(vs_1_quarter);
+    Serial.print("VS Valuesi: ");
+    Serial.print(vs_1q_value);
     Serial.print(", ");
-    Serial.print(vs_2_quarter);
+    Serial.print(vs_2q_value);
     Serial.print(", ");
-    Serial.print(vs_3_quarter);
+    Serial.print(vs_3q_value);
     Serial.print(", ");
-    Serial.println(vs_full);
+    Serial.println(vs_4q_value);
 #endif
 
 #ifdef VS_TANK
-    vs_1_quarter = analogRead(vs_1_pin);
-    vs_2_quarter = analogRead(vs_2_pin);
-    vs_3_quarter = analogRead(vs_3_pin);
-    vs_full = analogRead(vs_full_pin);
+    vs_1q_value = analogRead(VS_1Q_PIN);
+    vs_2q_value = analogRead(VS_2Q_PIN);
+    vs_3q_value = analogRead(VS_3Q_PIN);
+    vs_4q_value = analogRead(VS_4Q_PIN);
 #endif
 
 #ifdef AS_TANK
-    as_1_quarter = analogRead(as_1_pin);
-    as_2_quarter = analogRead(as_2_pin);
-    as_3_quarter = analogRead(as_3_pin);
-    as_full = analogRead(as_full_pin);
+    as_1q_value = analogRead(AS_1Q_PIN);
+    as_2q_value = analogRead(AS_2Q_PIN);
+    as_3q_value = analogRead(AS_3Q_PIN);
+    as_4q_value = analogRead(AS_4Q_PIN);
 #endif
 
 #ifdef WS_TANK
-    ws_3_quarter = analogRead(ws_3_pin);
-    ws_full = analogRead(ws_full_pin);
+    ws_3q_value = analogRead(WS_3Q_PIN);
+    ws_4q_value = analogRead(WS_4Q_PIN);
 #endif
 
 #if DISPLAY_TYPE == 1
@@ -164,7 +156,7 @@ void loop() {
     display.drawRect(25, 8, 50, 7, WHITE);
 #endif
 
-    if(vs_full>v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v ) {
+    if(vs_4q_value>v && vs_3q_value>v && vs_2q_value>v && vs_1q_value>v ) {
         vs_alarm = false;
 
 #if DISPLAY_TYPE == 0
@@ -177,7 +169,7 @@ void loop() {
         display.println("(100%)");
 #endif
 
-    } else if(vs_full<v && vs_3_quarter>v && vs_2_quarter>v && vs_1_quarter>v) {
+    } else if(vs_4q_value<v && vs_3q_value>v && vs_2q_value>v && vs_1q_value>v) {
         vs_alarm = false;
 
 #if DISPLAY_TYPE == 0
@@ -190,7 +182,7 @@ void loop() {
         display.println("(75%)");
 #endif
 
-    } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter>v && vs_1_quarter>v) {
+    } else if(vs_4q_value<v && vs_3q_value<v && vs_2q_value>v && vs_1q_value>v) {
         vs_alarm = false;
 
 #if DISPLAY_TYPE == 0
@@ -203,7 +195,7 @@ void loop() {
         display.println("(50%)");
 #endif
 
-    } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter<v && vs_1_quarter>v) {
+    } else if(vs_4q_value<v && vs_3q_value<v && vs_2q_value<v && vs_1q_value>v) {
         vs_alarm = false;
 
 #if DISPLAY_TYPE == 0
@@ -217,7 +209,7 @@ void loop() {
         display.println("(25%)");
 #endif
 
-    } else if(vs_full<v && vs_3_quarter<v && vs_2_quarter<v && vs_1_quarter<v) {
+    } else if(vs_4q_value<v && vs_3q_value<v && vs_2q_value<v && vs_1q_value<v) {
         vs_alarm = true;
 
 #if DISPLAY_TYPE == 0
@@ -252,36 +244,45 @@ void loop() {
     display.drawRect(25, 16, 50, 7, WHITE);
 #endif
 
-    if(as_full>v && as_3_quarter>v && as_2_quarter>v && as_1_quarter>v ) {
+    if(as_4q_value>v && as_3q_value>v && as_2q_value>v && as_1q_value>v ) {
         Serial.println("100");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 16, 50, 7, 1);
         display.setCursor(80,16);
         display.println("(100%)");
 #endif
-    } else if(as_full<v && as_3_quarter>v && as_2_quarter>v && as_1_quarter>v) {
+
+    } else if(as_4q_value<v && as_3q_value>v && as_2q_value>v && as_1q_value>v) {
         Serial.println("75");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 16, 38, 7, 1);
         display.setCursor(80,16);
         display.println("(75%)");
 #endif
-    } else if(as_full<v && as_3_quarter<v && as_2_quarter>v && as_1_quarter>v) {
+
+    } else if(as_4q_value<v && as_3q_value<v && as_2q_value>v && as_1q_value>v) {
         Serial.println("50");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 16, 25, 7, 1);
         display.setCursor(80,16);
         display.println("(50%)");
 #endif
-    } else if(as_full<v && as_3_quarter<v && as_2_quarter<v && as_1_quarter>v) {
+
+    } else if(as_4q_value<v && as_3q_value<v && as_2q_value<v && as_1q_value>v) {
         Serial.println("25");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 16, 13, 7, 1);
         display.setCursor(80,16);
         display.println("(25%)");
 #endif
-    } else if(as_full<v && as_3_quarter<v && as_2_quarter<v && as_1_quarter<v) {
+
+    } else if(as_4q_value<v && as_3q_value<v && as_2q_value<v && as_1q_value<v) {
         Serial.println("0");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 16, 1, 7, 1);
         display.setCursor(80,16);
@@ -298,7 +299,9 @@ void loop() {
         display.println("( 0%)");
         display.setTextColor(WHITE);
 #endif
+
     }
+
 #endif
 
 #ifdef WS_TANK
@@ -309,9 +312,10 @@ void loop() {
     display.drawRect(25, 24, 50, 7, WHITE);
 #endif
 
-    if(ws_full>v && ws_3_quarter>v ) {
+    if(ws_4q_value>v && ws_3q_value>v ) {
         vs_alarm = true;
         Serial.println("100");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 24, 50, 7, 1);
         display.setCursor(80,24);
@@ -328,9 +332,11 @@ void loop() {
         display.println("(100%)");
         display.setTextColor(WHITE);
 #endif
-    } else if(ws_full<v && ws_3_quarter>v ) {
+
+    } else if(ws_4q_value<v && ws_3q_value>v ) {
         vs_alarm = true;
         Serial.println("75");
+
 #if DISPLAY_TYPE == 1
         display.fillRect(25, 24, 38, 7, 1);
         display.setCursor(80,24);
@@ -347,9 +353,14 @@ void loop() {
         display.println("(75%)");
         display.setTextColor(WHITE);
 #endif
+
     } else {
         vs_alarm = false;
+        display.setCursor(80,24);
+        display.println("( 0%)");
+        display.setTextColor(WHITE);
     }
+
 #endif
 
 #if DISPLAY_TYPE == 1
